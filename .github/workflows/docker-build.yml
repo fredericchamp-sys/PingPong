@@ -16,7 +16,7 @@ jobs:
         uses: docker/login-action@v3
         with:
           username: fribau.champ@gmail.com
-          password: $U_2Eu.AyWz3is#$U_2Eu.AyWz3is#
+          password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Build image
         run: docker build -t myuser/pingpong:latest .

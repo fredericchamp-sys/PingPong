@@ -1,0 +1,106 @@
+/* ==== Retro Ping Pong Styles ==== */
+body.rpp-active-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  font-family: "Press Start 2P", cursive, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; /* Retro font + fallbacks */
+  background-color: #1a1a1a; /* Dark background */
+  color: #ffffff;
+  margin: 0;
+  text-align: center;
+  padding: 10px;
+  box-sizing: border-box;
+  image-rendering: pixelated; /* For a sharper retro look if using images/canvas */
+}
+
+/* Import Retro Font */
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+.rpp-game-container {
+  background-color: #0d0d0d;
+  padding: 20px;
+  border-radius: 10px;
+  border: 3px solid #333;
+  box-shadow: 0 0 15px rgba(0, 255, 0, 0.3), inset 0 0 10px rgba(0,0,0,0.5);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.rpp-title {
+  font-size: 2rem;
+  color: #00ff00; /* Classic green */
+  margin-top: 0;
+  margin-bottom: 15px;
+  text-shadow: 2px 2px #008000;
+}
+
+.rpp-scoreboard {
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+  max-width: 600px;
+  margin-bottom: 15px;
+}
+
+.rpp-score {
+  flex: 1;
+}
+
+.rpp-score-label {
+  display: block;
+  font-size: 0.8rem;
+  color: #cccccc;
+  margin-bottom: 5px;
+}
+
+.rpp-score-value {
+  font-size: 2rem;
+  color: #ffffff;
+  font-weight: bold;
+}
+
+#rppGameCanvas {
+  background-color: #000000;
+  border: 2px solid #00ff00;
+  /* Dimensions will be set by JavaScript */
+}
+
+.rpp-button {
+  background-color: #009900;
+  color: #ffffff;
+  border: 2px solid #00ff00;
+  padding: 10px 20px;
+  font-family: "Press Start 2P", cursive;
+  font-size: 1rem;
+  cursor: pointer;
+  margin-top: 20px;
+  text-transform: uppercase;
+  transition: background-color 0.2s, box-shadow 0.2s;
+  box-shadow: 0 0 5px rgba(0, 255, 0, 0.5);
+}
+
+.rpp-button:hover {
+  background-color: #00cc00;
+  box-shadow: 0 0 10px rgba(0, 255, 0, 0.7);
+}
+
+.rpp-button:active {
+  background-color: #006600;
+  transform: translateY(1px);
+}
+
+.rpp-instructions {
+  font-size: 0.8rem;
+  color: #bbbbbb;
+  margin-top: 15px;
+}
+
+.rpp-win-message {
+  font-size: 1.5rem;
+  color: #ffff00; /* Yellow for win message */
+  margin-top: 15px;
+  font-weight: bold;
+  text-shadow: 2px 2px #cc0000;
+}

@@ -76,75 +76,83 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    function update() {
-        if (!gameRunning) return;
+   function update() {
+    if (!gameRunning) return;
 
-        // Move player 1 paddle
-        if (keysPressed['w'] && player1.y > 0) {
-            player1.y -= player1.speed;
-        }
-        if (keysPressed['s'] && player1.y < canvas.height - player1.height) {
-            player1.y += player1.speed;
-        }
-
-        // AI for player 2 paddle (simple)
-        let player2Center = player2.y + player2.height / 2;
-        if (player2Center < ball.y - 20 && player2.y < canvas.height - player2.height) {
-            player2.y += player2.speed;
-        } else if (player2Center > ball.y + 20 && player2.y > 0) {
-            player2.y -= player2.speed;
-        }
-        // Keep AI paddle within bounds
-        if (player2.y < 0) player2.y = 0;
-        if (player2.y > canvas.height - player2.height) player2.y = canvas.height - player2.height;
-
-        // Move ball
-        ball.x += ball.speedX;
-        ball.y += ball.speedY;
-
-        // Ball collision with top/bottom walls
-        if (ball.y - ball.radius < 0 || ball.y + ball.radius > canvas.height) {
-            ball.speedY = -ball.speedY;
-        }
-
-        // Ball collision with paddles
-        // Player 1 (left)
-        if (ball.x - ball.radius < player1.x + player1.width &&
-            ball.x + ball.radius > player1.x &&
-            ball.y + ball.radius > player1.y &&
-            ball.y - ball.radius < player1.y + player1.height) {
-            ball.speedX = -ball.speedX;
-            // Optional: Change angle based on where it hits paddle
-            let deltaY = ball.y - (player1.y + player1.height / 2);
-            ball.speedY = deltaY * 0.15; // Max speedY change
-            // Increase ball speed slightly on hit
-            ball.speedX *= 1.05;
-        }
-
-        // Player 2 (right)
-        if (ball.x + ball.radius > player2.x &&
-            ball.x - ball.radius < player2.x + player2.width &&
-            ball.y + ball.radius > player2.y &&
-            ball.y - ball.radius < player2.y + player2.height) {
-            ball.speedX = -ball.speedX;
-            let deltaY = ball.y - (player2.y + player2.height / 2);
-            ball.speedY = deltaY * 0.15;
-            ball.speedX *= 1.05;
-        }
-
-        // Score points
-        if (ball.x - ball.radius < 0) { // Player 2 scores
-            player2.score++;
-            updateScores();
-            resetBall();
-            checkWin();
-        } else if (ball.x + ball.radius > canvas.width) { // Player 1 scores
-            player1.score++;
-            updateScores();
-            resetBall();
-            checkWin();
-        }
+    // Move player 1 paddle
+    if (keysPressed['w'] && player1.y > 0) {
+        player1.y -= player1.speed;
     }
+    if (keysPressed['s'] && player1.y < canvas.height - player1.height) {
+        player1.y += player1.speed;
+    }
+
+    // AI for player 2 paddle (simple)
+    let player2Center = player2.y + player2.height / 2;
+    if (player2Center < ball.y - 20 && player2.y < canvas.height - player2.height) {
+        player2.y += player2.speed;
+    } else if (player2Center > ball.y + 20 && player2.y > 0) {
+        player2.y -= player2.speed;
+    }
+
+    // Keep AI paddle within bounds
+    if (player2.y < 0) player2.y = 0;
+    if (player2.y > canvas.height - player2.height) player2.y = canvas.height - player2.height;
+
+    // Move ball
+    ball.x += ball.speedX;
+    ball.y += ball.speedY;
+
+    // Ball collision with top/bottom walls
+    if (ball.y - ball.radius < 0) {
+        ball.y = ball.radius; // reposition to prevent sticking
+        ball.speedY = -ball.speedY;
+    } else if (ball.y + ball.radius > canvas.height) {
+        ball.y = canvas.height - ball.radius; // reposition to prevent sticking
+        ball.speedY = -ball.speedY;
+    }
+
+    const MAX_SPEED = 15; // cap to keep game playable
+
+    // Ball collision with player 1 paddle (left)
+    if (ball.x - ball.radius < player1.x + player1.width &&
+        ball.x + ball.radius > player1.x &&
+        ball.y + ball.radius > player1.y &&
+        ball.y - ball.radius < player1.y + player1.height) {
+
+        ball.x = player1.x + player1.width + ball.radius; // reposition outside paddle
+        ball.speedX = Math.abs(ball.speedX) * 1.05;       // always move right, then cap
+        ball.speedX = Math.min(ball.speedX, MAX_SPEED);
+        let deltaY = ball.y - (player1.y + player1.height / 2);
+        ball.speedY = deltaY * 0.15;
+    }
+
+    // Ball collision with player 2 paddle (right)
+    if (ball.x + ball.radius > player2.x &&
+        ball.x - ball.radius < player2.x + player2.width &&
+        ball.y + ball.radius > player2.y &&
+        ball.y - ball.radius < player2.y + player2.height) {
+
+        ball.x = player2.x - ball.radius;                  // reposition outside paddle
+        ball.speedX = -Math.abs(ball.speedX) * 1.05;       // always move left, then cap
+        ball.speedX = Math.max(ball.speedX, -MAX_SPEED);
+        let deltaY = ball.y - (player2.y + player2.height / 2);
+        ball.speedY = deltaY * 0.15;
+    }
+
+    // Score points
+    if (ball.x - ball.radius < 0) {        // Player 2 scores
+        player2.score++;
+        updateScores();
+        resetBall();
+        checkWin();
+    } else if (ball.x + ball.radius > canvas.width) { // Player 1 scores
+        player1.score++;
+        updateScores();
+        resetBall();
+        checkWin();
+    }
+}
 
     function render() {
         // Clear canvas

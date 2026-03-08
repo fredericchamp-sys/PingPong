@@ -1,10 +1,10 @@
 name: SonarQube Scan
 on:
   push:
-     branches: [main]
+    branches: [main]
   pull_request:
     branches: [main]
-    
+
 jobs:
   sonarqube:
     name: Run SonarQube Analysis
@@ -17,4 +17,5 @@ jobs:
       - name: Run SonarQube Scan
         uses: SonarSource/sonarqube-scan-action@v6
         env:
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}

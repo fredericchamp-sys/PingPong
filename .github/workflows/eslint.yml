@@ -25,10 +25,17 @@ jobs:
         with:
           node-version: 24
 
-      - name: Install ESLint
+      - name: Install ESLint and dependencies
         run: |
           npm install eslint@8.10.0
+          npm install prettier
+          npm install eslint-config-prettier
           npm install @microsoft/eslint-formatter-sarif@3.1.0
+          npm install @typescript-eslint/parser
+          npm install @typescript-eslint/eslint-plugin
+          npm install @stylistic/eslint-plugin
+          npm install eslint-plugin-import
+          npm install eslint-plugin-lit
 
       - name: Run ESLint
         env:

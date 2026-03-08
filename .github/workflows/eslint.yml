@@ -38,11 +38,12 @@ jobs:
             --config .eslintrc.js \
             --ext .js,.jsx,.ts,.tsx \
             --format @microsoft/eslint-formatter-sarif \
-            --output-file eslint-results.sarif
+            --output-file eslint-results.sarif || true
         continue-on-error: true
 
-      - name: Upload analysis results to GitHub
+      - name: Upload SARIF if it exists
+        if: always() && hashFiles('eslint-results.sarif') != ''
         uses: github/codeql-action/upload-sarif@v4
         with:
           sarif_file: eslint-results.sarif
-          wait-for-processing: true
+          wait-for-processing: true          

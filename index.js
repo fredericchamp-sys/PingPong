@@ -88,10 +88,10 @@ document.addEventListener('DOMContentLoaded', function() {
 }
 
 function movePlayer1() {
-    if (keysPressed['w'] && player1.y > 0) {
+    if (keysPressed['q'] && player1.y > 0) {
         player1.y -= player1.speed;
     }
-    if (keysPressed['s'] && player1.y < canvas.height - player1.height) {
+    if (keysPressed['w'] && player1.y < canvas.height - player1.height) {
         player1.y += player1.speed;
     }
 }
